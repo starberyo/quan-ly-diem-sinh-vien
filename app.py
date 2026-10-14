@@ -26,25 +26,31 @@ def xep_loai(diem):
 
 df['Xep_loai'] = df['Tong_ket'].apply(xep_loai)
 
-# 2. Hiển thị bảng điểm của 10 sinh viên (Họ tên, Chuyên cần, Giữa kỳ, Cuối kỳ, Tổng kết, Xếp loại)
+# Đổi tên các cột hiển thị trên bảng cho đẹp mắt và có dấu tiếng Việt đầy đủ
+df = df.rename(columns={
+    'Tong_ket': 'Tổng kết',
+    'Xep_loai': 'Xếp loại'
+})
+
+# 2. Hiển thị bảng điểm của 10 sinh viên
 st.subheader("Bảng điểm chi tiết 10 sinh viên")
 st.dataframe(df)
 
 # 3. Hiển thị điểm trung bình của lớp
 st.subheader("Thống kê chung của lớp")
-st.write(f"- Điểm tổng kết trung bình của lớp: **{df['Tong_ket'].mean():.2f}**")
+st.write(f"- Điểm tổng kết trung bình của lớp: **{df['Tổng kết'].mean():.2f}**")
 
 # 4. Hiển thị sinh viên có điểm cao nhất và thấp nhất
-max_score = df['Tong_ket'].max()
-min_score = df['Tong_ket'].min()
-sv_max = ", ".join(df[df['Tong_ket'] == max_score]['Họ và tên'].tolist())
-sv_min = ", ".join(df[df['Tong_ket'] == min_score]['Họ và tên'].tolist())
+max_score = df['Tổng kết'].max()
+min_score = df['Tổng kết'].min()
+sv_max = ", ".join(df[df['Tổng kết'] == max_score]['Họ và tên'].tolist())
+sv_min = ", ".join(df[df['Tổng kết'] == min_score]['Họ và tên'].tolist())
 
 st.write(f"- Sinh viên có điểm tổng kết cao nhất ({max_score:.2f}): **{sv_max}**")
 st.write(f"- Sinh viên có điểm tổng kết thấp nhất ({min_score:.2f}): **{sv_min}**")
 
 # 5. Hiển thị số sinh viên đạt (điểm tổng kết >= 5.0)
-so_sv_dat = (df['Tong_ket'] >= 5.0).sum()
+so_sv_dat = (df['Tổng kết'] >= 5.0).sum()
 st.write(f"- Số sinh viên đạt (điểm tổng kết >= 5.0): **{so_sv_dat}**")
 
 # 6. Tạo danh sách xổ xuống (Selectbox) chọn một sinh viên
@@ -58,19 +64,19 @@ st.info(f"""
 - **Điểm Chuyên cần:** {student_info['Chuyên cần']}
 - **Điểm Giữa kỳ:** {student_info['Giữa kỳ']}
 - **Điểm Cuối kỳ:** {student_info['Cuối kỳ']}
-- **Điểm Tổng kết:** {student_info['Tong_ket']:.2f}
-- **Xếp loại:** {student_info['Xep_loai']}
+- **Điểm Tổng kết:** {student_info['Tổng kết']:.2f}
+- **Xếp loại:** {student_info['Xếp loại']}
 """)
 
 # 8. Hiển thị biểu đồ cột điểm tổng kết của 10 sinh viên
 st.subheader("Biểu đồ cột điểm tổng kết của 10 sinh viên")
 fig, ax = plt.subplots(figsize=(8, 4))
-ax.barh(df['Họ và tên'], df['Tong_ket'], color='skyblue')
+ax.barh(df['Họ và tên'], df['Tổng kết'], color='skyblue')
 ax.set_xlabel('Điểm tổng kết')
 ax.set_ylabel('Họ và tên')
 ax.set_xlim(0, 10)
 st.pyplot(fig)
 
-# 9. Hiển thị họ tên và MSSV ở cuối trang Web App với kích thước chữ nhỏ (Nhớ thay thông tin của bạn vào đây)
+# 9. Hiển thị họ tên và MSSV ở cuối trang Web App với kích thước chữ nhỏ
 st.markdown("---")
-st.caption("Người thực hiện: Trần Minh Hằng - MSSV: 036308013108")
+st.caption("Người thực hiện: [Trần Minh Hằng] - MSSV: [036308013108]")
